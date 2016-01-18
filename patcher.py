@@ -568,7 +568,7 @@ def unmount_cd():
 ### MAIN CODE START ###
 #######################
 # Validate that we're running XenServer
-relver = '/etc/redhat-release'
+relver = '/etc/xensource-inventory'
 xs = False
 xsver = None
 
@@ -585,14 +585,14 @@ except IOError:
 
 # Read the relver contents, and split into variables for the XenServer version.
 try:
-    filedata = str(f.read().replace('\n', ''))
-    file_list = filedata.split()
+    filedata = str(f.read().replace('\n', '^'))
+    file_list = filedata.split('^')
     ### DEBUG
     #print(file_list)
     if "XenServer" or "Xenserver" in file_list:
         xs = True
-        fullver = file_list[2]
-        shortver = fullver.split("-")[0]
+        fullver = file_list[15]
+        shortver = fullver.split("=")[1].replace("'", "")
         if len(shortver.split('.')) > 2:
             # Provide 'xsver' for versions consisting of two and three segments. (eg: 6.2 vs 6.2.1)
             if shortver.split('.')[2] == "0":
